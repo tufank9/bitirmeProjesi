@@ -33,7 +33,7 @@ const AnimationMovies = () => {
   return (
     <div className="max-w-7xl mx-auto p-6">
       <h2 className="text-2xl font-bold text-center mb-6">Çizgi Film Filmleri</h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 justify-center">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 justify-items-center">
         {animationMovies.map((movie) => (
           <Link key={movie.id} href={`/movies/${movie.id}`}>
             <Card className="w-full flex-shrink-0 cursor-pointer">
