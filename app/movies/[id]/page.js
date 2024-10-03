@@ -4,14 +4,26 @@ import { useRouter } from 'next/navigation';
 import { Star } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { supabase } from '@/lib/supabaseClient';
 
 const MovieDetail = ({ params }) => {
   const router = useRouter();
-  const { id } = params; // URL'den ID'yi alıyoruz
+  const { id } = params; 
   const [movie, setMovie] = useState(null);
   const [userRating, setUserRating] = useState(0);
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState([]);
+  const [session, setSession] = useState(null);
+
+  // Kullanıcı oturumunu kontrol ediyoruz
+  useEffect(() => {
+    const checkSession = async () => {
+      const { data: sessionData } = await supabase.auth.getSession()
+      setSession(sessionData.session);
+    };
+
+    checkSession();
+  }, []);
 
   useEffect(() => {
     if (id) {
@@ -27,7 +39,6 @@ const MovieDetail = ({ params }) => {
         .then(response => response.json())
         .then(data => {
           setMovie(data);
-          // Örnek yorumlar ekleyelim, gerçek uygulamada backend'den alınır.
           setComments([
             { id: 1, user: "Kullanıcı1", text: "Harika bir film!" },
             { id: 2, user: "Kullanıcı2", text: "Ortalama üstü, izlenir." },
@@ -38,19 +49,26 @@ const MovieDetail = ({ params }) => {
   }, [id]);
 
   const handleRating = (rating) => {
+    if (!session) {
+      alert("Puan vermek için giriş yapmalısınız.");
+      return;
+    }
     setUserRating(rating);
-    // Burada kullanıcının puanı backend'e gönderilecek
   };
 
   const handleCommentSubmit = () => {
-    // Yorum ekleme işlemi burada yapılacak
+    if (!session) {
+      alert("Yorum yapabilmek için giriş yapmalısınız.");
+      return;
+    }
+
     const newComment = { id: comments.length + 1, user: "Yeni Kullanıcı", text: comment };
     setComments(prevComments => [...prevComments, newComment]);
     setComment("");
     console.log("Yorum gönderildi:", comment);
   };
 
-  if (!movie) return <div>Loading...</div>; // Yükleniyor durumu
+  if (!movie) return <div>Loading...</div>; 
 
   return (
     <div className="max-w-4xl mx-auto p-4">
@@ -89,14 +107,18 @@ const MovieDetail = ({ params }) => {
             <p>{comment.text}</p>
           </div>
         ))}
-        <div className="mt-4">
-          <Textarea
-            placeholder="Yorumunuzu yazın..."
-            value={comment}
-            onChange={(e) => setComment(e.target.value)}
-            className="mb-2" />
-          <Button onClick={handleCommentSubmit}>Yorum Yap</Button>
-        </div>
+        {session ? (
+          <div className="mt-4">
+            <Textarea
+              placeholder="Yorumunuzu yazın..."
+              value={comment}
+              onChange={(e) => setComment(e.target.value)}
+              className="mb-2" />
+            <Button onClick={handleCommentSubmit}>Yorum Yap</Button>
+          </div>
+        ) : (
+          <p className="text-red-500">Yorum yapabilmek için lütfen giriş yapın.</p>
+        )}
       </div>
     </div>
   );
