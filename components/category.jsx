@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { Film, Star, TrendingUp, Award, Clock } from 'lucide-react'
+import { Film, Star, TrendingUp} from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { CategoryTitle } from '@/app/category/categoryTitle'
@@ -31,7 +31,8 @@ export function FilmCategories() {
             </CardHeader>
             <CardFooter>
               <Button asChild>
-                <Link href={`/kategori/${category.name.toLowerCase()}`}>Keşfet</Link>
+                <Link href={"/category"}>Keşfet</Link>
+                {/* href={`/kategori/${category.name.toLowerCase()}`} */}
               </Button>
             </CardFooter>
           </Card>
@@ -51,7 +52,7 @@ export function FilmCategories() {
           </CardContent>
           <CardFooter>
             <Button variant="outline" asChild>
-              <Link href="/en-yuksek-puanli">Görüntüle</Link>
+              <Link href="/">Görüntüle</Link>
             </Button>
           </CardFooter>
         </Card>
@@ -67,14 +68,11 @@ export function FilmCategories() {
           </CardContent>
           <CardFooter>
             <Button variant="outline" asChild>
-              <Link href="/trend-filmler">Görüntüle</Link>
+              <Link href="/category">Görüntüle</Link>
             </Button>
           </CardFooter>
         </Card>
-       
-        
-      </div>
-     
+      </div>    
     </div>)
   );
 }

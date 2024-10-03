@@ -16,7 +16,8 @@ const topHorrorMovies = [
 
 export function AksiyonFilm() {
   return (
-    (<div className="container mx-auto px-4 py-8">
+    (
+    <div className="container mx-auto px-4 py-8">
       <h1 className="text-4xl font-bold mb-8 flex items-center">
         <Ghost className="mr-2 h-8 w-8" />
        <KorkuFİlmBaslik/>
@@ -42,7 +43,7 @@ export function AksiyonFilm() {
           </CardContent>
           <CardFooter>
             <Button asChild>
-              <Link href="/en-iyi-korku-filmleri">Tümünü Gör</Link>
+              <Link href="/category/action">Tümünü Gör</Link>
             </Button>
           </CardFooter>
         </Card>
@@ -59,15 +60,11 @@ export function AksiyonFilm() {
           </CardContent>
           <CardFooter>
             <Button asChild variant="outline">
-              <Link href="/yakinda-korku-filmleri">Keşfet</Link>
+              <Link href="/category/action">Keşfet</Link>
             </Button>
           </CardFooter>
         </Card>
-
-        
       </div>
-     
-      
     </div>)
   );
 }
