@@ -2,7 +2,6 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabaseClient";
-import MovieCarousel from "@/components/movieCarousel";
 import MainPage from "@/components/MainPage";
 
 export default function Home() {
@@ -10,23 +9,22 @@ export default function Home() {
   const router = useRouter();
 
   useEffect(() => {
-    const session = supabase.auth.getSession(); // Asenkron fonksiyonu çağırıyoruz
+    const session = supabase.auth.getSession(); 
     session.then(({ data }) => {
-      setUser(data.session?.user || null); // Oturumdaki kullanıcıyı al
+      setUser(data.session?.user || null); 
     });
   }, []);
 
   const handleLogout = async () => {
     const { error } = await supabase.auth.signOut();
     if (!error) {
-      setUser(null); // Kullanıcı çıkış yaptıktan sonra kullanıcıyı sıfırla
-      router.push('/'); // Giriş sayfasına yönlendir
+      setUser(null);
+      router.push('/');
     }
   };
 
   return (
     <div>
-      {/* <MovieCarousel/> */}
       <MainPage/>
     </div>
   );

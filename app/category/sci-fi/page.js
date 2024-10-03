@@ -1,5 +1,9 @@
+import SciFiMovies from "./SciFiCategory";
+
 export default function SciFi(){
     return(
-        <>Bilim Kurgu</>
+        <>
+        <SciFiMovies/>
+        </>
     )
 }

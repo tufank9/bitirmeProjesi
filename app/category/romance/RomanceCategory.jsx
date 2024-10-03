@@ -2,10 +2,10 @@
 import { useEffect, useState } from 'react';
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Star } from "lucide-react";
-import Link from "next/link"; // Link bileşenini içe aktar
+import Link from "next/link"; // Link bileşeni içe aktarılıyor
 
-const ActionMovies = () => {
-  const [actionMovies, setActionMovies] = useState([]);
+const RomanticMovies = () => {
+  const [romanticMovies, setRomanticMovies] = useState([]);
 
   useEffect(() => {
     const options = {
@@ -16,27 +16,27 @@ const ActionMovies = () => {
       }
     };
 
-    fetch('https://api.themoviedb.org/3/discover/movie?with_genres=28&include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc', options)
+    fetch('https://api.themoviedb.org/3/discover/movie?with_genres=10749&include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc', options)
       .then(response => response.json())
       .then(data => {
         const movies = data.results.slice(0, 25).map(movie => ({
           id: movie.id,
           title: movie.title,
           rating: movie.vote_average,
-          poster: movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : '/placeholder.svg' // Placeholder kullanma
+          poster: movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : '/placeholder.svg' // Placeholder kullanımı
         }));
-        setActionMovies(movies);
+        setRomanticMovies(movies);
       })
       .catch(err => console.error(err));
   }, []);
 
   return (
     <div className="max-w-7xl mx-auto p-6">
-      <h2 className="text-2xl font-bold text-center mb-6">Aksiyon Filmleri</h2>
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
-        {actionMovies.map((movie) => (
-          <Link key={movie.id} href={`/movies/${movie.id}`}> {/* Tıklanabilir link oluştur */}
-            <Card className="w-full flex-shrink-0 cursor-pointer"> {/* Kartın genişliğini %100 yap */}
+      <h2 className="text-2xl font-bold text-center mb-6">Romantik Filmler</h2>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 justify-center">
+        {romanticMovies.map((movie) => (
+          <Link key={movie.id} href={`/movies/${movie.id}`}> {/* Tıklanabilir link */}
+            <Card className="w-full flex-shrink-0 cursor-pointer"> {/* Tıklanabilir card */}
               <CardContent className="p-4">
                 <div className="aspect-[2/3] bg-gray-200 mb-2">
                   <img src={movie.poster} alt={movie.title} className="object-cover w-full h-full" />
@@ -57,4 +57,4 @@ const ActionMovies = () => {
   );
 };
 
-export default ActionMovies;
+export default RomanticMovies;

@@ -1,4 +1,4 @@
-import HorrorMovies from "@/components/HorrorMovies";
+import HorrorMovies from "./HorrorMovies";
 
 export default function Horror(){
     return(
