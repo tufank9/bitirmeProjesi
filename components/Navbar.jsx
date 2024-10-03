@@ -4,11 +4,11 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Menu, X } from 'lucide-react';
 import { Button } from "@/components/ui/button";
-import { ModeToggle } from './Toggle';
+import { ModeToggle } from './Toggle'; // ModeToggle bileşenini içe aktar
 import { supabase } from '@/lib/supabaseClient';
 
 const filmCategories = [
-    { name: "Kategori", href: "/category" },
+  { name: "Kategori", href: "/category" },
   { name: "Korku", href: "/category/horror" },
   { name: "Aksiyon", href: "/category/action" },
   { name: "Bilim Kurgu", href: "/category/sci-fi" },
@@ -60,10 +60,10 @@ export default function Navbar() {
           </div>
 
           <div className="hidden md:flex items-center">
+            <ModeToggle /> {/* ModeToggle her zaman burada olacak */}
             {user ? (
               <>
-                <Button variant="ghost" onClick={handleLogout}>Çıkış Yap</Button>
-                <ModeToggle />
+                <Button variant="ghost" onClick={handleLogout} className="ml-2">Çıkış Yap</Button>
               </>
             ) : (
               <>
@@ -102,22 +102,23 @@ export default function Navbar() {
             ))}
           </div>
           <div className="pt-4 pb-3 border-t border-gray-200">
-            {user ? (
-              <div className="flex items-center px-5">
+            <div className="flex items-center px-5">
+              <ModeToggle className="mr-2" /> {/* ModeToggle burada da mevcut */}
+              {user ? (
                 <Button variant="ghost" onClick={handleLogout} className="w-full text-left">Çıkış Yap</Button>
-              </div>
-            ) : (
-              <div className="flex flex-col space-y-2 px-5">
-                <Link href="/login" onClick={toggleMenu}>
-                  <Button variant="ghost" className="w-full">Giriş Yap</Button>
-                </Link>
-                <Link href="/register" onClick={toggleMenu}>
-                  <Button className="w-full">Üye Ol</Button>
-                </Link>
-              </div>
-            )}
+              ) : (
+                <div className="flex flex-col space-y-2 w-full">
+                  <Link href="/login" onClick={toggleMenu}>
+                    <Button variant="ghost" className="w-full">Giriş Yap</Button>
+                  </Link>
+                  <Link href="/register" onClick={toggleMenu}>
+                    <Button className="w-full">Üye Ol</Button>
+                  </Link>
+                </div>
+              )}
+            </div>
             <div className="mt-3 px-5">
-              <ModeToggle />
+              <ModeToggle /> {/* Mobile menüde de ModeToggle */}
             </div>
           </div>
         </div>
