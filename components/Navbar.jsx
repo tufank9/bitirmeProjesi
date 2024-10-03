@@ -10,7 +10,6 @@ import { supabase } from '@/lib/supabaseClient';
 const filmCategories = [
     { name: "Kategori", href: "/category" },
   { name: "Korku", href: "/category/horror" },
-  { name: "Komedi", href: "/category/comedy" },
   { name: "Aksiyon", href: "/category/action" },
   { name: "Bilim Kurgu", href: "/category/sci-fi" },
 ];

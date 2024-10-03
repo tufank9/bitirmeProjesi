@@ -1,15 +1,36 @@
+"use cl"
+import { useEffect, useState } from 'react';
 import { Card, CardHeader, CardContent, CardTitle, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Star, TrendingUp } from "lucide-react";
 
 export default function MainPage() {
-  const trendingMovies = [
-    { id: 1, title: "Trend Film 1", rating: 4.5, releaseDate: "2023-10-01" },
-    { id: 2, title: "Trend Film 2", rating: 4.2, releaseDate: "2023-09-15" },
-    { id: 3, title: "Trend Film 3", rating: 4.0, releaseDate: "2023-08-22" },
-  ];
- 
+  const [trendingMovies, setTrendingMovies] = useState([]);
+
+  useEffect(() => {
+    const options = {
+      method: 'GET',
+      headers: {
+        accept: 'application/json',
+        Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI0ODA5YzI5ODE1MWYyYTU2MTM2NjM0NjVhMGIwZmE4OCIsIm5iZiI6MTcyNTM3MjkyMC43NzU5MjEsInN1YiI6IjY2NDNkY2NjZjY0ODRkNzgxNjJhNGZkZCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.Uoaupt0Opwnf-fnMX7BMitM-6lzAEMidWnzk6q5uBXs'
+      }
+    };
+
+    fetch('https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc', options)
+      .then(response => response.json())
+      .then(data => {
+        const movies = data.results.slice(0, 3).map(movie => ({
+          id: movie.id,
+          title: movie.title,
+          rating: movie.vote_average,
+          releaseDate: movie.release_date
+        }));
+        setTrendingMovies(movies);
+      })
+      .catch(err => console.error(err));
+  }, []);
+
   return (
     <div className="max-w-7xl mx-auto p-6 space-y-6">
 

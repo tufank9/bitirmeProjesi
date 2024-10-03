@@ -7,12 +7,12 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { CategoryTitle } from '@/app/category/categoryTitle'
 
 const categories = [
-  { name: "Aksiyon", icon: <Film className="h-6 w-6" />, description: "Heyecan dolu, tempolu filmler" },
   { name: "Komedi", icon: <Film className="h-6 w-6" />, description: "Kahkaha garantili eğlenceli filmler" },
   { name: "Drama", icon: <Film className="h-6 w-6" />, description: "Duygusal ve etkileyici hikayeler" },
-  { name: "Bilim Kurgu", icon: <Film className="h-6 w-6" />, description: "Gelecek ve teknoloji temalı filmler" },
-  { name: "Korku", icon: <Film className="h-6 w-6" />, description: "Gerilim dolu, korkutucu filmler" },
   { name: "Romantik", icon: <Film className="h-6 w-6" />, description: "Aşk ve ilişki temalı filmler" },
+  { name: "ÇizgiFilm", icon: <Film className="h-6 w-6" />, description: "Çocuklar için eğlenceli filmler" },
+  { name: "Macera", icon: <Film className="h-6 w-6" />, description: "Heyecan dolu yolculuklara çıkaran filmler" },
+  { name: "Gerilim", icon: <Film className="h-6 w-6" />, description: "Tansiyonu yüksek, kenarında tutan filmler. filmler" },
 ]
 
 export function FilmCategories() {
@@ -38,41 +38,7 @@ export function FilmCategories() {
           </Card>
         ))}
       </div>
-      <h2 className="text-2xl font-semibold mb-6">Öne Çıkanlar</h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center">
-              <Star className="h-6 w-6 mr-2" />
-              En Yüksek Puanlı Filmler
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p>Kullanıcılarımızın en yüksek puan verdiği filmleri keşfedin.</p>
-          </CardContent>
-          <CardFooter>
-            <Button variant="outline" asChild>
-              <Link href="/">Görüntüle</Link>
-            </Button>
-          </CardFooter>
-        </Card>
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center">
-              <TrendingUp className="h-6 w-6 mr-2" />
-              Trend Filmler
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p>Şu anda en çok izlenen ve konuşulan filmleri kaçırmayın.</p>
-          </CardContent>
-          <CardFooter>
-            <Button variant="outline" asChild>
-              <Link href="/category">Görüntüle</Link>
-            </Button>
-          </CardFooter>
-        </Card>
-      </div>    
+       
     </div>)
   );
 }
