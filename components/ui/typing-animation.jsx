@@ -12,6 +12,10 @@ export default function TypingAnimation({
   const [i, setI] = useState(0);
 
   useEffect(() => {
+    setI(0); // Yeni metin geldiğinde 'i'yi sıfırla
+  }, [text]);
+  
+  useEffect(() => {
     const typingEffect = setInterval(() => {
       if (i < text.length) {
         setDisplayedText(text.substring(0, i + 1));
@@ -20,11 +24,12 @@ export default function TypingAnimation({
         clearInterval(typingEffect);
       }
     }, duration);
-
+  
     return () => {
       clearInterval(typingEffect);
     };
-  }, [duration, i]);
+  }, [duration, i, text]); // 'text' burada bağımlılığa eklendi
+  
 
   return (
     (<h1

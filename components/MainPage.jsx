@@ -15,7 +15,7 @@ export default function MainPage() {
 
       {/* Hero Section */}
       <section className="text-center py-12 bg-gray-100 dark:bg-neutral-900 rounded-lg shadow-md">
-        <h1 className="text-4xl font-bold text-primary">FilmCritic'e Hoşgeldiniz!</h1>
+        <h1 className="text-4xl font-bold text-primary">FilmCritic&apos;e Hoşgeldiniz!</h1>
         <p className="mt-4 text-lg text-muted-foreground">
           Yeni filmler keşfedip, puanlayıp ve yorum yapmak için en havalı yer 
         </p>
