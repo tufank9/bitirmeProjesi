@@ -7,7 +7,6 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Badge } from "@/components/ui/badge"
 import { KorkuFİlmBaslik } from '@/app/category/horror/text'
 
-// Bu örnek veri yapısı. Gerçek uygulamada bu veriler bir API'den gelecektir.
 const topHorrorMovies = [
   { id: 1, title: "Korkunç Film 1", rating: 4.5, year: 2021 },
   { id: 2, title: "Gece Kabusları", rating: 4.2, year: 2020 },
@@ -93,43 +92,7 @@ export function AksiyonFilm() {
           </Button>
         ))}
       </div>
-      <h2 className="text-2xl font-semibold mb-6">Özel Koleksiyonlar</h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center">
-              <Skull className="h-6 w-6 mr-2" />
-              Klasik Korku Filmleri
-            </CardTitle>
-            <CardDescription>Tüm zamanların en iyi korku filmlerini keşfedin</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <p>1920'lerden günümüze, korku sinemasının dönüm noktası filmleri</p>
-          </CardContent>
-          <CardFooter>
-            <Button asChild>
-              <Link href="/klasik-korku-filmleri">İncele</Link>
-            </Button>
-          </CardFooter>
-        </Card>
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center">
-              <Moon className="h-6 w-6 mr-2" />
-              Gece İzlemelik Korku Filmleri
-            </CardTitle>
-            <CardDescription>Gece yarısı seansları için mükemmel seçimler</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <p>Uykunuzu kaçıracak, gerilim dolu filmler</p>
-          </CardContent>
-          <CardFooter>
-            <Button asChild>
-              <Link href="/gece-korku-filmleri">Keşfet</Link>
-            </Button>
-          </CardFooter>
-        </Card>
-      </div>
+      
     </div>)
   );
 }
