@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Star } from "lucide-react";
-import Link from "next/link"; // Link bileşeni içe aktarılıyor
+import Link from "next/link"; 
 
 const AnimationMovies = () => {
   const [animationMovies, setAnimationMovies] = useState([]);
@@ -35,8 +35,8 @@ const AnimationMovies = () => {
       <h2 className="text-2xl font-bold text-center mb-6">Çizgi Film Filmleri</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 justify-center">
         {animationMovies.map((movie) => (
-          <Link key={movie.id} href={`/movies/${movie.id}`}> {/* Tıklanabilir link */}
-            <Card className="w-full flex-shrink-0 cursor-pointer"> {/* Tıklanabilir card */}
+          <Link key={movie.id} href={`/movies/${movie.id}`}>
+            <Card className="w-full flex-shrink-0 cursor-pointer">
               <CardContent className="p-4">
                 <div className="aspect-[2/3] bg-gray-200 mb-2">
                   <img src={movie.poster} alt={movie.title} className="object-cover w-full h-full" />
