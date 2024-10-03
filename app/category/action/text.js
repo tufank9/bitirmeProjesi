@@ -1,10 +1,10 @@
 import HyperText from "@/components/ui/hyper-text";
 
-export function KorkuFİlmBaslik() {
+export function AksiyonFİlmBaslik() {
   return (
     <HyperText
       className="text-4xl font-bold text-black dark:text-white"
-      text="KORKU FİLMLERİ"
+      text="AKSİYON FİLMLERİ"
     />
   );
 }
