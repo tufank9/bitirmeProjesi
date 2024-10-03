@@ -71,70 +71,10 @@ export function FilmCategories() {
             </Button>
           </CardFooter>
         </Card>
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center">
-              <Award className="h-6 w-6 mr-2" />
-              Ödüllü Filmler
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p>Prestijli ödüller kazanmış filmleri keşfedin.</p>
-          </CardContent>
-          <CardFooter>
-            <Button variant="outline" asChild>
-              <Link href="/odullu-filmler">Görüntüle</Link>
-            </Button>
-          </CardFooter>
-        </Card>
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center">
-              <Clock className="h-6 w-6 mr-2" />
-              Yakında Vizyonda
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p>Yakında vizyona girecek filmleri önceden keşfedin.</p>
-          </CardContent>
-          <CardFooter>
-            <Button variant="outline" asChild>
-              <Link href="/yakinda-vizyonda">Görüntüle</Link>
-            </Button>
-          </CardFooter>
-        </Card>
+       
+        
       </div>
-      <h2 className="text-2xl font-semibold mb-6">Özel Koleksiyonlar</h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <Card>
-          <CardHeader>
-            <CardTitle>Yönetmen Spotlight</CardTitle>
-            <CardDescription>Her ay farklı bir yönetmenin eserlerini keşfedin</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <p>Bu ay: Christopher Nolan</p>
-          </CardContent>
-          <CardFooter>
-            <Button asChild>
-              <Link href="/yonetmen-spotlight">İncele</Link>
-            </Button>
-          </CardFooter>
-        </Card>
-        <Card>
-          <CardHeader>
-            <CardTitle>Tematik Koleksiyonlar</CardTitle>
-            <CardDescription>Özel temalara göre seçilmiş film listeleri</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <p>Güncel tema: Distopik Gelecek</p>
-          </CardContent>
-          <CardFooter>
-            <Button asChild>
-              <Link href="/tematik-koleksiyonlar">Keşfet</Link>
-            </Button>
-          </CardFooter>
-        </Card>
-      </div>
+     
     </div>)
   );
 }

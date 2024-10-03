@@ -64,34 +64,9 @@ export function AksiyonFilm() {
           </CardFooter>
         </Card>
 
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center">
-              <TrendingUp className="h-6 w-6 mr-2" />
-              Trend Korku Filmleri
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p>Şu anda en çok izlenen ve konuşulan korku filmlerini kaçırmayın.</p>
-          </CardContent>
-          <CardFooter>
-            <Button asChild variant="outline">
-              <Link href="/trend-korku-filmleri">Görüntüle</Link>
-            </Button>
-          </CardFooter>
-        </Card>
+        
       </div>
-      <h2 className="text-2xl font-semibold mb-6">Korku Alt Kategorileri</h2>
-      <div
-        className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-12">
-        {['Doğaüstü', 'Slasher', 'Psikolojik', 'Zombi', 'Hayalet', 'Vampir', 'Canavar', 'Gerilim'].map(subCategory => (
-          <Button key={subCategory} variant="outline" asChild className="h-auto py-2">
-            <Link href={`/kategori/korku/${subCategory.toLowerCase()}`}>
-              {subCategory}
-            </Link>
-          </Button>
-        ))}
-      </div>
+     
       
     </div>)
   );
