@@ -103,7 +103,6 @@ export default function Navbar() {
           </div>
           <div className="pt-4 pb-3 border-t border-gray-200">
             <div className="flex items-center px-5">
-              <ModeToggle className="mr-2" /> {/* ModeToggle burada da mevcut */}
               {user ? (
                 <Button variant="ghost" onClick={handleLogout} className="w-full text-left">Çıkış Yap</Button>
               ) : (
@@ -118,7 +117,7 @@ export default function Navbar() {
               )}
             </div>
             <div className="mt-3 px-5">
-              <ModeToggle /> {/* Mobile menüde de ModeToggle */}
+              <ModeToggle />
             </div>
           </div>
         </div>
