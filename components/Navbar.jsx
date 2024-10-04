@@ -6,6 +6,7 @@ import { Menu, X } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { ModeToggle } from './Toggle'; // ModeToggle bileşenini içe aktar
 import { supabase } from '@/lib/supabaseClient';
+import { useRouter } from 'next/navigation'; // Router'ı içe aktar
 
 const filmCategories = [
   { name: "Kategori", href: "/category" },
@@ -15,17 +16,34 @@ const filmCategories = [
 ];
 
 export default function Navbar() {
+  const router = useRouter(); // Router'ı tanımla
   const [user, setUser] = useState(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  useEffect(() => {
-    const fetchSession = async () => {
-      const { data } = await supabase.auth.getSession();
-      setUser(data.session?.user || null);
-    };
+  // Kullanıcı oturumunu kontrol etmek için fetchSession fonksiyonunu tanımla
+  const fetchSession = async () => {
+    const { data } = await supabase.auth.getSession();
+    setUser(data.session?.user || null);
+  };
 
-    fetchSession();
-  }, []);
+  // Kullanıcı oturumunu kontrol et
+  useEffect(() => {
+    fetchSession(); // Sayfa yüklendiğinde oturumu kontrol et
+
+    // Oturum değiştiğinde kullanıcıyı yönlendirmek için bir dinleyici ekle
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      setUser(session?.user || null);
+      if (event === 'SIGNED_IN') {
+        setTimeout(() => {
+          router.push('/'); // Ana sayfaya yönlendir
+        }, 500); // 0.5 saniye (500 ms) bekleyin
+      }
+    });
+
+    return () => {
+      subscription?.unsubscribe(); // Temizleme işlemi
+    };
+  }, [router]); // router bağımlılık olarak eklenmeli
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
