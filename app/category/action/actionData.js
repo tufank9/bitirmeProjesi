@@ -56,7 +56,7 @@ const ActionMovies = () => {
     };
 
     fetchMovies();
-  }, []); // Boş bağımlılık dizisi ile yalnızca bileşen ilk yüklendiğinde çağrılır
+  }, []);
 
   return (
     <div className="max-w-7xl mx-auto p-6">

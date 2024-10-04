@@ -27,8 +27,8 @@ const MovieDetail = ({ params }) => {
 
   // Film bilgilerini ve yorumları getir
   useEffect(() => {
-    const fetchMovie = async () => {
-      if (id) {
+    if (id) {
+      const fetchMovie = async () => {
         const options = {
           method: 'GET',
           headers: {
@@ -39,12 +39,6 @@ const MovieDetail = ({ params }) => {
 
         try {
           const response = await fetch(`https://api.themoviedb.org/3/movie/${id}?language=en-US`, options);
-          
-          // Fetch işleminde hata kontrolü
-          if (!response.ok) {
-            throw new Error("Film verileri alınamadı");
-          }
-
           const data = await response.json();
           setMovie(data);
 
@@ -60,12 +54,11 @@ const MovieDetail = ({ params }) => {
           }
         } catch (err) {
           console.error("Film veya yorumlar getirilirken bir hata oluştu:", err);
-          // Hata mesajı kullanıcıya gösterilebilir
         }
-      }
-    };
+      };
 
-    fetchMovie();
+      fetchMovie();
+    }
   }, [id]);
 
   // Puan verme işlemi
@@ -78,9 +71,7 @@ const MovieDetail = ({ params }) => {
   };
 
   // Yorum ekleme işlemi
-  const handleCommentSubmit = async (event) => {
-    event.preventDefault(); // Varsayılan form submit davranışını engelle
-
+  const handleCommentSubmit = async () => {
     if (!session) {
       alert("Yorum yapabilmek için giriş yapmalısınız.");
       return;
@@ -89,13 +80,14 @@ const MovieDetail = ({ params }) => {
     try {
       const { data, error } = await supabase
         .from('comments')
-        .insert([{ comment, movie_id: id, user_id: session.user.id, user_email: session.user.email }])
+        .insert([{ comment, movie_id: id, user_id: session.user.id, user_email: session.user.email }]) // E-posta adresini ekliyoruz
         .select();
 
+      // Yorum eklendi mi, kontrol et
       if (error) {
         console.error("Yorum eklenirken bir hata oluştu:", error);
       } else if (data && data.length > 0) {
-        setComments(prevComments => [...prevComments, { id: data[0].id, user_id: session.user.id, user_email: session.user.email, comment }]);
+        setComments(prevComments => [...prevComments, { id: data[0].id, user_id: session.user.id, user_email: session.user.email, comment }]); // Yorumda e-postayı ekliyoruz
         setComment("");
         console.log("Yorum başarıyla eklendi.");
       } else {
@@ -148,15 +140,15 @@ const MovieDetail = ({ params }) => {
           </div>
         ))}
         {session ? (
-          <form onSubmit={handleCommentSubmit} className="mt-4"> {/* Form oluşturduk */}
+          <div className="mt-4">
             <Textarea
               placeholder="Yorumunuzu yazın..."
               value={comment}
               onChange={(e) => setComment(e.target.value)}
               className="mb-2"
             />
-            <Button type="submit">Yorum Yap</Button> {/* Butonu submit olarak ayarladık */}
-          </form>
+            <Button onClick={handleCommentSubmit}>Yorum Yap</Button>
+          </div>
         ) : (
           <p className="text-red-500">Yorum yapabilmek için lütfen giriş yapın.</p>
         )}
