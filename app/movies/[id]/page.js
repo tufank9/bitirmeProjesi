@@ -27,8 +27,8 @@ const MovieDetail = ({ params }) => {
 
   // Film bilgilerini ve yorumları getir
   useEffect(() => {
-    if (id) {
-      const fetchMovie = async () => {
+    const fetchMovie = async () => {
+      if (id) {
         const options = {
           method: 'GET',
           headers: {
@@ -39,6 +39,12 @@ const MovieDetail = ({ params }) => {
 
         try {
           const response = await fetch(`https://api.themoviedb.org/3/movie/${id}?language=en-US`, options);
+          
+          // Fetch işleminde hata kontrolü
+          if (!response.ok) {
+            throw new Error("Film verileri alınamadı");
+          }
+
           const data = await response.json();
           setMovie(data);
 
@@ -54,11 +60,12 @@ const MovieDetail = ({ params }) => {
           }
         } catch (err) {
           console.error("Film veya yorumlar getirilirken bir hata oluştu:", err);
+          // Hata mesajı kullanıcıya gösterilebilir
         }
-      };
+      }
+    };
 
-      fetchMovie();
-    }
+    fetchMovie();
   }, [id]);
 
   // Puan verme işlemi
