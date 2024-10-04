@@ -14,7 +14,7 @@ const MovieDetail = ({ params }) => {
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState([]);
   const [session, setSession] = useState(null);
-
+  
   // Kullanıcı oturumunu kontrol ediyoruz
   useEffect(() => {
     const checkSession = async () => {
@@ -27,8 +27,8 @@ const MovieDetail = ({ params }) => {
 
   // Film bilgilerini ve yorumları getir
   useEffect(() => {
-    if (id) {
-      const fetchMovie = async () => {
+    const fetchMovie = async () => {
+      if (id) {
         const options = {
           method: 'GET',
           headers: {
@@ -52,22 +52,54 @@ const MovieDetail = ({ params }) => {
           } else {
             setComments(commentData);
           }
+
+          // Kullanıcının puanını alma işlemi
+          if (session) {
+            const { data: ratingData, error: ratingError } = await supabase
+              .from('ratings')
+              .select('rating')
+              .eq('movie_id', id)
+              .eq('user_id', session.user.id)
+              .single(); // Tek bir kayıt alıyoruz
+
+            if (ratingError) {
+              console.error("Kullanıcının puanı alınırken bir hata oluştu:", ratingError);
+            } else if (ratingData) {
+              setUserRating(ratingData.rating); // Kullanıcının puanını duruma ayarlıyoruz
+            }
+          }
+
         } catch (err) {
           console.error("Film veya yorumlar getirilirken bir hata oluştu:", err);
         }
-      };
+      }
+    };
 
-      fetchMovie();
-    }
-  }, [id]);
+    fetchMovie();
+  }, [id, session]); // session'ı bağımlılıklar arasına ekliyoruz
 
   // Puan verme işlemi
-  const handleRating = (rating) => {
+  const handleRating = async (rating) => {
     if (!session) {
       alert("Puan vermek için giriş yapmalısınız.");
       return;
     }
-    setUserRating(rating);
+    
+    // Puanı veritabanına kaydet
+    try {
+      const { error } = await supabase
+        .from('ratings')
+        .upsert([{ movie_id: id, user_id: session.user.id, rating }]); // Puanı ekliyoruz veya güncelliyoruz
+
+      if (error) {
+        console.error("Puan eklenirken bir hata oluştu:", error);
+      } else {
+        setUserRating(rating); // Kullanıcı puanını ayarlıyoruz
+        console.log("Puan başarıyla eklendi.");
+      }
+    } catch (err) {
+      console.error("Beklenmedik bir hata oluştu:", err);
+    }
   };
 
   // Yorum ekleme işlemi
