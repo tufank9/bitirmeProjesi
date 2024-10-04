@@ -11,6 +11,7 @@ const MovieDetail = ({ params }) => {
   const { id } = params;
   const [movie, setMovie] = useState(null);
   const [userRating, setUserRating] = useState(0);
+  const [averageRating, setAverageRating] = useState(null); // Kullanıcıların ortalama puanı
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState([]);
   const [session, setSession] = useState(null);
@@ -25,7 +26,7 @@ const MovieDetail = ({ params }) => {
     checkSession();
   }, []);
 
-  // Film bilgilerini ve yorumları getir
+  // Film bilgilerini, yorumları ve puanları getir
   useEffect(() => {
     const fetchMovie = async () => {
       if (id) {
@@ -60,13 +61,27 @@ const MovieDetail = ({ params }) => {
               .select('rating')
               .eq('movie_id', id)
               .eq('user_id', session.user.id)
-              .single(); // Tek bir kayıt alıyoruz
+              .single();
 
             if (ratingError) {
               console.error("Kullanıcının puanı alınırken bir hata oluştu:", ratingError);
             } else if (ratingData) {
-              setUserRating(ratingData.rating); // Kullanıcının puanını duruma ayarlıyoruz
+              setUserRating(ratingData.rating);
             }
+          }
+
+          // Tüm kullanıcıların puanlarının ortalamasını getirme işlemi
+          const { data: allRatingsData, error: allRatingsError } = await supabase
+            .from('ratings')
+            .select('rating')
+            .eq('movie_id', id);
+
+          if (allRatingsError) {
+            console.error("Puanlar getirilirken bir hata oluştu:", allRatingsError);
+          } else if (allRatingsData.length > 0) {
+            const totalRatings = allRatingsData.reduce((acc, curr) => acc + curr.rating, 0);
+            const avgRating = totalRatings / allRatingsData.length; // Ortalama puan
+            setAverageRating(avgRating.toFixed(1)); // Virgülden sonra bir basamakla gösteriyoruz
           }
 
         } catch (err) {
@@ -76,7 +91,7 @@ const MovieDetail = ({ params }) => {
     };
 
     fetchMovie();
-  }, [id, session]); // session'ı bağımlılıklar arasına ekliyoruz
+  }, [id, session]);
 
   // Puan verme işlemi
   const handleRating = async (rating) => {
@@ -84,18 +99,31 @@ const MovieDetail = ({ params }) => {
       alert("Puan vermek için giriş yapmalısınız.");
       return;
     }
-    
-    // Puanı veritabanına kaydet
+
     try {
       const { error } = await supabase
         .from('ratings')
-        .upsert([{ movie_id: id, user_id: session.user.id, rating }]); // Puanı ekliyoruz veya güncelliyoruz
+        .upsert([{ movie_id: id, user_id: session.user.id, rating }]);
 
       if (error) {
         console.error("Puan eklenirken bir hata oluştu:", error);
       } else {
-        setUserRating(rating); // Kullanıcı puanını ayarlıyoruz
+        setUserRating(rating);
         console.log("Puan başarıyla eklendi.");
+
+        // Puan verdikten sonra ortalamayı tekrar hesaplıyoruz
+        const { data: allRatingsData, error: allRatingsError } = await supabase
+          .from('ratings')
+          .select('rating')
+          .eq('movie_id', id);
+
+        if (allRatingsError) {
+          console.error("Puanlar getirilirken bir hata oluştu:", allRatingsError);
+        } else if (allRatingsData.length > 0) {
+          const totalRatings = allRatingsData.reduce((acc, curr) => acc + curr.rating, 0);
+          const avgRating = totalRatings / allRatingsData.length;
+          setAverageRating(avgRating.toFixed(1));
+        }
       }
     } catch (err) {
       console.error("Beklenmedik bir hata oluştu:", err);
@@ -112,14 +140,13 @@ const MovieDetail = ({ params }) => {
     try {
       const { data, error } = await supabase
         .from('comments')
-        .insert([{ comment, movie_id: id, user_id: session.user.id, user_email: session.user.email }]) // E-posta adresini ekliyoruz
+        .insert([{ comment, movie_id: id, user_id: session.user.id, user_email: session.user.email }])
         .select();
 
-      // Yorum eklendi mi, kontrol et
       if (error) {
         console.error("Yorum eklenirken bir hata oluştu:", error);
       } else if (data && data.length > 0) {
-        setComments(prevComments => [...prevComments, { id: data[0].id, user_id: session.user.id, user_email: session.user.email, comment }]); // Yorumda e-postayı ekliyoruz
+        setComments(prevComments => [...prevComments, { id: data[0].id, user_id: session.user.id, user_email: session.user.email, comment }]);
         setComment("");
         console.log("Yorum başarıyla eklendi.");
       } else {
@@ -149,6 +176,10 @@ const MovieDetail = ({ params }) => {
             <span className="mr-4">Kullanıcı Puanı: {userRating > 0 ? userRating.toFixed(1) : "Henüz puan verilmedi"}</span>
             <span>IMDb Puanı: {movie.vote_average.toFixed(1)}</span>
           </div>
+          <div className="flex items-center mb-4">
+            <Star className="w-5 h-5 text-yellow-400 mr-1" />
+            <span>Genel Kullanıcı Ortalaması: {averageRating ? averageRating : "Henüz puanlanmadı"}</span>
+          </div>
           <div className="mb-4">
             <p className="mb-2">Puan Ver:</p>
             <div className="flex">
@@ -167,7 +198,7 @@ const MovieDetail = ({ params }) => {
         <h2 className="text-2xl font-bold mb-4">Yorumlar</h2>
         {comments.map((comment) => (
           <div key={comment.id} className="mb-4">
-            <p className="font-semibold">{comment.user_email}</p> {/* E-posta adresini gösteriyoruz */}
+            <p className="font-semibold">{comment.user_email}</p>
             <p>{comment.comment}</p>
           </div>
         ))}
